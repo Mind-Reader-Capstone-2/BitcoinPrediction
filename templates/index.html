@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Bitcoin Price Forecast
+        </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="images/background.jpg">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            body {
+            padding: 25px;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            }
+            .header {
+			text-align: center;
+			color: goldenrod;
+			font-size: 35px;
+			font-family: "Times New Roman", Times, serif;
+            }
+
+            .inputs {
+            position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            }
+            html, body {
+            margin:0;
+            padding:0;    
+            height: 100%;
+            }
+
+            .wrap {
+            height: 100%;
+            display: flex;
+            padding: 1cm;
+            justify-content: center;
+            }
+
+            .output{
+                text-align: center;
+                color: white;
+                font-size: 25px;
+                font-family: Papyrus, Fantasy;
+            }
+
+            .button {
+            width: 140px;
+            height: 45px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 500;
+            color: #000;
+            background-color: #fff;
+            border: none;
+            border-radius: 45px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease 0s;
+            cursor: pointer;
+            outline: none;
+            }
+            .feedback {
+            position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            }
+            .button:hover {
+            background-color: hsl(103, 100%, 50%);
+            box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+            color: rgb(0, 0, 0);
+            transform: translateY(-7px);
+            }
+            .content {
+                
+                padding: 20px;
+            }
+            .feedback_button_like {
+                margin: 5px;
+            }
+            .feedback_button_like:hover {
+            background-color: hsl(103, 100%, 50%);
+            box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+            color: rgb(0, 0, 0);
+            transform: translateY(-7px); 
+            }
+            .feedback_button_dislike {
+                margin: 5px;
+            }
+            .feedback_button_dislike:hover {
+            background-color: hsl(0, 100%, 50%);
+            box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+            color: rgb(0, 0, 0);
+            transform: translateY(-7px);
+            }
+            .back-video {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                z-index: -100;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header" >
+            
+            <h1> Bitcoin Time Series Prediction </h1>
+            <h3> Please enter the dates for which you would like the forecast of bitcoin price </h3>
+            <i class="fa fa-bitcoin" style="font-size:48px;color:goldenrod"></i>
+            <br>
+                            
+        </div>
+        <div>
+            <video autoplay loop class="back-video" muted plays-inline>
+                <source src="{{ url_for('static',filename='black.mp4') }}" type="video/mp4">
+            </video>
+        </div>
+        <div class="content">
+            <div class="inputs">
+                <form action="{{ url_for('predict') }}" method="post">
+                    <input type="date" name="startdate" placeholder="Start Date" value="2012-01-01" min="2012-01-01" max="2025-12-31" required="required" />
+                     <input type="date" name="enddate" placeholder="End Date" value="2022-04-21" min="2012-01-02" max="2026-12-31" required="required" />
+            </div>
+            <div class="wrap">
+                <button class="button" type="submit" > Predict
+                </button>
+            </div>
+        </div>
+        <div id='chart' class='chart'></div>
+        <div class="output">
+            {{ prediction_text }}
+        </div>
+    </body>
+
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <script type='text/javascript'>
+      var graphs = {{graphJSON | safe}};
+      Plotly.plot('chart',graphs,{});
+    </script>    
+
+</html>
